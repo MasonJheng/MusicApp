@@ -11,13 +11,21 @@ struct SearchResponse: Codable {
    let results: [StoreItem]
 }
 struct StoreItem: Codable {
-   let artistName: String
-   let trackName: String
-   let collectionName: String?
-   let previewUrl: URL
-   let artworkUrl100: URL
-   let trackPrice: Double?
-   let releaseDate: Date
-   let isStreamable: Bool?
+    let artistName: String
+    let trackName: String
+    let collectionName: String?
+    let previewUrl: URL
+    let artworkUrl100: URL
+    let trackPrice: Double?
+    let releaseDate: Date
+    let isStreamable: Bool?
+    
+    var artworkUrl500: URL{
+        artworkUrl100.deletingLastPathComponent().appendingPathComponent("500x500bb.jpg")
+    }
+    
+    
+    
+    
 }
 

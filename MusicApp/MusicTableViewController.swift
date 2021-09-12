@@ -11,7 +11,7 @@ class MusicTableViewController: UITableViewController {
     var items = [StoreItem]()
     
     func fetchItems(){
-        if let urlStr = "https://itunes.apple.com/search?term=周杰倫&media=music".addingPercentEncoding(withAllowedCharacters:.urlQueryAllowed),
+        if let urlStr = "https://itunes.apple.com/search?term=林俊傑&media=music".addingPercentEncoding(withAllowedCharacters:.urlQueryAllowed),
         let url = URL(string: urlStr) {
             URLSession.shared.dataTask(with: url) { data, response ,error in
                 if let data = data {
@@ -38,7 +38,17 @@ class MusicTableViewController: UITableViewController {
         super.viewDidLoad()
         fetchItems()
     }
-
+    
+    
+    @IBSegueAction func showDetail(_ coder: NSCoder) -> SongDetailViewController? {
+        if let row = tableView.indexPathForSelectedRow?.row{
+            return SongDetailViewController(coder: coder, item: items[row])
+        }else{
+            return nil
+        }
+        
+    }
+    
     // MARK: - Table view data source
 
  
@@ -50,15 +60,18 @@ class MusicTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongTableViewCell
         let item = items[indexPath.row]
-        cell.textLabel?.text = item.trackName
-        cell.detailTextLabel?.text = item.artistName
+//        cell.textLabel?.text = item.trackName
+//        cell.detailTextLabel?.text = item.artistName
+        cell.nameLabel.text = item.trackName
         
+        cell.photoImageView.image = nil
         URLSession.shared.dataTask(with: item.artworkUrl100) { data, response, error in
             if let data = data {
                 DispatchQueue.main.async {
-                    cell.imageView?.image = UIImage(data: data)
+                    //cell.imageView?.image = UIImage(data: data)
+                    cell.photoImageView.image = UIImage(data: data)
                 }
                 
             }
